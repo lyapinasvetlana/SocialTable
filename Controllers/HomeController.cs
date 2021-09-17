@@ -54,7 +54,7 @@ namespace SocialNetWork.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                
+                //CheckingBlock();
                 return View();
             }
             else
@@ -75,7 +75,7 @@ namespace SocialNetWork.Controllers
         public async Task<IActionResult> Index()
         {
             //CheckingBlock();
-            return View(); 
+            return View(await db.Users.ToListAsync()); 
         }
         public IActionResult Create() //Views/Home добавим новое представление Create.cshtml:
         {
@@ -159,10 +159,10 @@ namespace SocialNetWork.Controllers
         
         [HttpPost]
         
-        public async Task<IActionResult> Block(User user)
+        public ActionResult Block(User user)
         {
             user.Status = "Blocked";
-            await db.SaveChangesAsync();
+            db.SaveChanges();
             return new EmptyResult();
         }
         
@@ -182,7 +182,7 @@ namespace SocialNetWork.Controllers
         }
         
        
-        public async Task<IActionResult> UpdateDB(string values, string nameOfAction)
+        public ActionResult UpdateDB(string values, string nameOfAction)
         {
             List<int> replyId = values.Split(',').Select(int.Parse).ToList();
             foreach (var id in replyId)
@@ -208,7 +208,7 @@ namespace SocialNetWork.Controllers
         public ActionResult CheckingBlock()
         {
             var user = db.Users.SingleOrDefault(b => b.Name == User.Identity.Name);
-            if (user is {Status: "Blocked"}) SignOut();
+            if (user is null or {Status: "Blocked"}) SignOut();
             return RedirectToAction("Index");
         }
 
