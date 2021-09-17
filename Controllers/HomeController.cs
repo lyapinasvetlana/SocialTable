@@ -50,13 +50,12 @@ namespace SocialNetWork.Controllers
         }*/
         
 
-        public async Task<IActionResult> Data()
+        public IActionResult Data()
         {
             if (User.Identity.IsAuthenticated)
             {
-                //CheckingBlock();
                 return View();
-            }
+            }         
             else
             {
                 return View("Index");
@@ -74,6 +73,7 @@ namespace SocialNetWork.Controllers
     
         public async Task<IActionResult> Index()
         {
+            CheckingBlock();
             //CheckingBlock();
             return View(await db.Users.ToListAsync()); 
         }
@@ -197,9 +197,9 @@ namespace SocialNetWork.Controllers
         
         public virtual ActionResult UpdateLastActivityDate(string userName)
         {
-            User user = db.Users.SingleOrDefault(u => u.Name == userName);
-            user.LastActivityTime = new DateTimeOffset(DateTime.Now).ToString();
-            db.Entry(user).State = EntityState.Modified;
+            User user = db.Users.FirstOrDefault(u => u.Name == userName);
+            if(user!=null) user.LastActivityTime = new DateTimeOffset(DateTime.Now).ToString();
+            //b.Entry(user).State = EntityState.Modified;
             db.SaveChanges();
             return new EmptyResult();
         }

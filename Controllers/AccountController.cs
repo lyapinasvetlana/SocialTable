@@ -36,38 +36,43 @@ namespace SocialNetWork.Controllers
             if (!string.IsNullOrEmpty(google)) { await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties(){RedirectUri = Url.Action("Response")});}
             else if (!string.IsNullOrEmpty(yahoo)) { await HttpContext.ChallengeAsync(YahooAuthenticationDefaults.AuthenticationScheme, new AuthenticationProperties() { RedirectUri = Url.Action("Response")}); }
             else if (!string.IsNullOrEmpty(github)) { await HttpContext.ChallengeAsync(GitHubAuthenticationDefaults.AuthenticationScheme, new AuthenticationProperties() {RedirectUri = Url.Action("Response")}); }
-            
+
+            ;
         }
-        
-        
+                
         public async Task<IActionResult> Response()
         {
             
-             
-
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             var claims = result.Principal.Identities.FirstOrDefault().Claims.Select(claim => new {claim.OriginalIssuer, claim.Value}).ToArray();
             string date = new DateTimeOffset(DateTime.Now).ToString();
-                User user = new User
-                {
-                    IdThirdPartyApp = claims[0].Value, Name = claims[2].Value, NetWork = claims[0].OriginalIssuer,
-                    Status = "Active", FirstEntryTime = date, LastActivityTime = date
-                };
+            User user = new User {IdThirdPartyApp = claims[0].Value, Name = User.Identity.Name, NetWork = claims[0].OriginalIssuer, Status = "Active", FirstEntryTime = date, LastActivityTime = date};
+            /*var replyInBase = db.Users.FirstOrDefault(b => b.IdThirdPartyApp == user.IdThirdPartyApp);
+            if(replyInBase != null) { replyInBase.Name = user.Name; replyInBase.NetWork = user.NetWork; replyInBase.Status = user.Status; replyInBase.LastActivityTime = date;
+            }
+            else
+            {
                 db.Users.Add(user);
-                await db.SaveChangesAsync();
-
-
+            }
+            await db.SaveChangesAsync();*/
+            
+            /*ClaimsPrincipal currentUser = this.User;
+            var currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;*/
+            
+            await InsertOrUpdate(user);
             return Redirect("~/Home/Data");
         }
 
-        public async void InsertOrUpdate(User user)
+        public async Task<IActionResult> InsertOrUpdate(User user)
         {
-            var replyInBase = db.Users.SingleOrDefault(b => b.IdThirdPartyApp == user.IdThirdPartyApp);
-            if (replyInBase != null)
-            { replyInBase.Name = user.Name; replyInBase.NetWork = user.NetWork; replyInBase.Status = user.Status; }
-            else  db.Users.Add(user);
+            var replyInBase = db.Users.FirstOrDefault(b => b.IdThirdPartyApp == user.IdThirdPartyApp);
+            if(replyInBase != null) { replyInBase.Name = user.Name; replyInBase.NetWork = user.NetWork; replyInBase.Status = user.Status; replyInBase.LastActivityTime = new DateTimeOffset(DateTime.Now).ToString();}
+            else
+            {
+                db.Users.Add(user);
+            }
             await db.SaveChangesAsync();
-            
+            return new EmptyResult();
         }
         
         
