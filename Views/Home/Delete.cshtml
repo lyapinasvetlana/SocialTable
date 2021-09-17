@@ -1,10 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+@model SocialNetWork.Models.User
+@*Причем надо отметит, что на форме нет никакого поля для параметра id 
+и в теге формы также не устанавливается параметр id, как, например, 
+в представлении Edit, так как данный параметр берется из строки запроса.*@
+@{
+    ViewBag.Title = "Удаление пользователя";
+}
+ 
+@*<div>
+    <dl class="dl-horizontal">
+        <dt>Имя</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+ 
+        <dt>Возраст</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Age)
+        </dd>
+    </dl>
+ 
+    <div>
+        <form asp-controller="Home" asp-action="Delete" method="post">
+            <div class="form-group">
+                <input type="submit" class="btn btn-default" value="Удалить" />
+            </div>
+        </form>
+    </div>
+</div>*@

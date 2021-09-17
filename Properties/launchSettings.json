@@ -21,7 +21,21 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "POSTGRES_USER_ID": "postgres",
+        "POSTGRES_PASSWORD": "1234",
+        "POSTGRES_HOST": "localhost",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DB": "postgres-0",
+        "IDYAHOO": "dj0yJmk9MkNLMndhMFRhZGJXJmQ9WVdrOU9IWk1VRUpTY25RbWNHbzlNQT09JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PTI3",
+        "SECRETYAHOO": "94afc4d721d757974373ef4a99cff862af46b1f1",
+        "SECRETGOOGLE": "XzIUfdXnHX_ffelVSQ2Ou5zY",
+        "SECRETGITHUB":"672f63a15d5bc2b82405772bbb919670baac1447",
+        "IDGITHUB": "1aaa15aa0d8eb12c67b0",
+        "IDGOOGLE": "938941646381-cgmpbd8kh9aci9t54dl6frh6hopu53f0.apps.googleusercontent.com"
+        
+        
+        
       }
     }
   }

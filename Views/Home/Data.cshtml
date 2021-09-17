@@ -1,0 +1,68 @@
+@using SocialNetWork.Controllers
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://unpkg.com/@@ag-grid-enterprise/all-modules@26.0.0/dist/ag-grid-enterprise.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-grid.css">
+  <link rel="stylesheet" href="https://unpkg.com/ag-grid-community/dist/styles/ag-theme-alpine.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Font+Name">
+</head>
+<body>
+<span class="material-icons" onclick="getSelectedRows('Block')">lock</span>
+<span class="material-icons" onclick="getSelectedRows('Unblock')">lock_open</span>
+<span class="material-icons" onclick="getSelectedRows('Delete')">delete</span>
+
+<div id="myGrid" style="height: calc(100vh - 400px);width:100%;" class="ag-theme-alpine-dark"></div>
+  <script type="text/javascript" charset="utf-8">
+       var gridOptions = {
+         columnDefs: [
+           { field: 'Id', minWidth: 120, headerCheckboxSelection: isFirstColumn, checkboxSelection: isFirstColumn, type: 'rightAligned'},
+           { field: 'Name', minWidth: 200},
+           { field: 'NetWork', filter: 'agSetColumnFilter', filterParams: {suppressAndOrCondition: true}, minWidth: 140},
+           { field: 'FirstEntryTime', minWidth: 240},
+           { field: 'LastActivityTime', minWidth: 240},
+           { field: 'Status', minWidth: 150, filter: 'agSetColumnFilter', filterParams: {suppressAndOrCondition: true}}
+         ],
+         defaultColDef: {
+           lockPosition: true, cellClass: 'locked-col',
+           floatingFilter: true,
+           suppressMenu: true, floatingFilterComponentParams: {suppressFilterButton:true},
+           filterParams: {applyMiniFilterWhileTyping: true},
+           flex: 1,
+           resizable: true,
+           sortable: true,
+           unSortIcon: true,
+         },
+         suppressRowClickSelection: true,
+         rowSelection: 'multiple',
+       };
+       const getSelectedRows = (x) => {
+          alert(x);
+          var date=[];
+          const selectedData= gridOptions.api.getSelectedNodes().map( node => node.data )
+          date.push(selectedData.map( node => node.Id))
+          var postData = { values: date, nameOfAction: x };
+          $.ajax({type: "POST", url: "/Home/UpdateDB", data: postData, dataType: "json", traditional: true})
+          document.location.reload()}
+       
+       function isFirstColumn(params) {
+         var displayedColumns = params.columnApi.getAllDisplayedColumns();
+         var thisIsFirstColumn = displayedColumns[0] === params.column;
+         return thisIsFirstColumn}
+         
+       document.addEventListener('DOMContentLoaded', function () {
+         var gridDiv = document.querySelector('#myGrid');
+         new agGrid.Grid(gridDiv, gridOptions);
+       
+         agGrid
+           .simpleHttpRequest({
+             url: '@Url.Action("Serialize", "Account")',
+           })
+           .then(function (data) {
+             gridOptions.api.setRowData(data);
+           });
+       });
+  </script>
+</body>
+</html>

@@ -1,7 +1,7 @@
-@model SocialNetWork.Models.User
+@*@model SocialNetWork.Models.User
 @{
     ViewBag.Title = "Add USERS";
-}
+$1$}*@
 @*<form asp-action="create" asp-controller="home">
     <div class="form-group">
         <label asp-for="Name" class="control-label">Имя</label>
@@ -14,44 +14,5 @@
     <div class="form-group">
         <input type="submit" value="Отправить" class="btn btn-default" />
     </div>
-</form>*@
+</form>#1#*@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>JavaScript example</title>
-    <meta charSet="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <style media="only screen">
-            html, body {
-                height: 100%;
-                width: 100%;
-                margin: 0;
-                box-sizing: border-box;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            html {
-                position: absolute;
-                top: 0;
-                left: 0;
-                padding: 0;
-                overflow: auto;
-            }
-
-            body {
-                padding: 1rem;
-                overflow: auto;
-            }
-        </style>
-</head>
-<body>
-<div id="myGrid" style="height: 100%;" class="ag-theme-alpine">
-</div>
-<script>var __basePath = './';</script>
-<script src="https://unpkg.com/@@ag-grid-community/all-modules@26.0.0/dist/ag-grid-community.min.js">
-		</script>
-<script src="js/site.js">
-		</script>
-</body>
-</html>
