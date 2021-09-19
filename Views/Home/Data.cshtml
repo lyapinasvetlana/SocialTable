@@ -43,8 +43,8 @@
           const selectedData= gridOptions.api.getSelectedNodes().map( node => node.data )
           date.push(selectedData.map( node => node.Id))
           var postData = { values: date, nameOfAction: x };
-          $.ajax({type: "POST", url: "/Home/UpdateDB", data: postData, dataType: "json", traditional: true})
-          document.location.reload()}
+          $.ajax({type: "POST", url: "/Home/UpdateDB", data: postData, dataType: "json", traditional: true, success: function (response) 
+          {window.location.replace(response.redirectUrl);}})}
        
        function isFirstColumn(params) {
          var displayedColumns = params.columnApi.getAllDisplayedColumns();

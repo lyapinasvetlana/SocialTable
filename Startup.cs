@@ -37,17 +37,17 @@ namespace SocialNetWork
                 options.UseNpgsql(Config.Config.SetConfig());
             });
             
-            /*//добавили роли
-            services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true) 
-                .AddEntityFrameworkStores<ApplicationContext>();;*/
-           
+    
             services.AddAuthentication(options =>
                 {
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-
+                   
                 })
-                .AddCookie()
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Home/";
+                    options.AccessDeniedPath = "/Home/";
+                })
                 .AddGoogle(options =>
                 {
                     options.ClientId = Environment.GetEnvironmentVariable("IDGOOGLE");
@@ -64,11 +64,8 @@ namespace SocialNetWork
                     options.ClientSecret = Environment.GetEnvironmentVariable("SECRETGITHUB");
                 });
             services.AddControllersWithViews();
-            
-            /*services.Configure<SecurityStampValidatorOptions>(options =>
-            {
-                options.ValidationInterval = TimeSpan.Zero;   
-            });*/
+
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/Home");
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -95,6 +92,7 @@ namespace SocialNetWork
             
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRouting();
             app.UseAuthentication();
